@@ -573,7 +573,7 @@ doReceive(tcpsrv_t *pThis, tcps_sess_t **ppSess, nspoll_t *pPoll)
 	ISOBJ_TYPE_assert(pThis, tcpsrv);
 	DBGPRINTF("netstream %p with new data\n", (*ppSess)->pStrm);
 	/* Receive message */
-	iRet = pThis->pRcvData(*ppSess, buf, sizeof(buf), &iRcvd);
+	iRet = pThis->pRcvData(*ppSess, buf, sizeof(buf), &iRcvd); //doRcvData(tcps_sess_t *pSess, char *buf, size_t lenBuf, ssize_t *piLenRcvd)
 	switch(iRet) {
 	case RS_RET_CLOSED:
 		if(pThis->bEmitMsgOnClose) {
@@ -589,7 +589,7 @@ doReceive(tcpsrv_t *pThis, tcps_sess_t **ppSess, nspoll_t *pPoll)
 		break;
 	case RS_RET_OK:
 		/* valid data received, process it! */
-		localRet = tcps_sess.DataRcvd(*ppSess, buf, iRcvd);
+		localRet = tcps_sess.DataRcvd(*ppSess, buf, iRcvd);// DataRcvd(tcps_sess_t *pThis, char *pData, const size_t iLen)
 		if(localRet != RS_RET_OK && localRet != RS_RET_QUEUE_FULL) {
 			/* in this case, something went awfully wrong.
 			 * We are instructed to terminate the session.
@@ -624,7 +624,7 @@ processWorksetItem(tcpsrv_t *pThis, nspoll_t *pPoll, int idx, void *pUsr)
 	DBGPRINTF("tcpsrv: processing item %d, pUsr %p, bAbortConn\n", idx, pUsr);
 	if(pUsr == pThis->ppLstn) {
 		DBGPRINTF("New connect on NSD %p.\n", pThis->ppLstn[idx]);
-		iRet = SessAccept(pThis, pThis->ppLstnPort[idx], &pNewSess, pThis->ppLstn[idx]);
+		iRet = SessAccept(pThis, pThis->ppLstnPort[idx], &pNewSess, pThis->ppLstn[idx]); //第一次连接需要accept
 		if(iRet == RS_RET_OK) {
 			if(pPoll != NULL) {
 				CHKiRet(nspoll.Ctl(pPoll, pNewSess->pStrm, 0, pNewSess, NSDPOLL_IN, NSDPOLL_ADD));
@@ -635,7 +635,7 @@ processWorksetItem(tcpsrv_t *pThis, nspoll_t *pPoll, int idx, void *pUsr)
 		}
 	} else {
 		pNewSess = (tcps_sess_t*) pUsr;
-		doReceive(pThis, &pNewSess, pPoll);
+		doReceive(pThis, &pNewSess, pPoll); //很重要 后面进入 接收数据
 		if(pPoll == NULL && pNewSess == NULL) {
 			pThis->pSessions[idx] = NULL;
 		}
@@ -698,7 +698,7 @@ processWorkset(tcpsrv_t *pThis, nspoll_t *pPoll, int numEntries, nsd_epworkset_t
 			ABORT_FINALIZE(RS_RET_FORCE_TERM);
 		if(numEntries == 1) {
 			/* process self, save context switch */
-			iRet = processWorksetItem(pThis, pPoll, workset[numEntries-1].id, workset[numEntries-1].pUsr);
+			iRet = processWorksetItem(pThis, pPoll, workset[numEntries-1].id, workset[numEntries-1].pUsr); //处理accept
 		} else {
 			pthread_mutex_lock(&wrkrMut);
 			/* check if there is a free worker */
@@ -918,7 +918,7 @@ Run(tcpsrv_t *pThis)
 
 	while(1) {
 		numEntries = sizeof(workset)/sizeof(nsd_epworkset_t);
-		localRet = nspoll.Wait(pPoll, -1, &numEntries, workset);
+		localRet = nspoll.Wait(pPoll, -1, &numEntries, workset); //进入nspoll.c的wait函数
 		if(glbl.GetGlobalInputTermState() == 1)
 			break; /* terminate input! */
 

@@ -314,7 +314,7 @@ doIdleProcessing(wti_t *pThis, wtp_t *pWtp, int *pbInactivityTOOccured)
 #if !defined(_AIX)
 #pragma GCC diagnostic ignored "-Wempty-body"
 #endif
-rsRetVal
+rsRetVal  ////work thread instance
 wtiWorker(wti_t *__restrict__ const pThis)
 {
 	wtp_t *__restrict__ const pWtp = pThis->pWtp; /* our worker thread pool -- shortcut */
@@ -362,7 +362,7 @@ wtiWorker(wti_t *__restrict__ const pThis)
 		}
 
 		/* try to execute and process whatever we have */
-		localRet = pWtp->pfDoWork(pWtp->pUsr, pThis);
+		localRet = pWtp->pfDoWork(pWtp->pUsr, pThis); //ConsumerReg(qqueue_t *pThis, wti_t *pWti)
 
 		if(localRet == RS_RET_ERR_QUEUE_EMERGENCY) {
 			break;	/* end of loop */
@@ -372,7 +372,7 @@ wtiWorker(wti_t *__restrict__ const pThis)
 					  terminateRet, bInactivityTOOccured);
 				break;	/* end of loop */
 			}
-			doIdleProcessing(pThis, pWtp, &bInactivityTOOccured);
+			doIdleProcessing(pThis, pWtp, &bInactivityTOOccured); //进程休眠
 			continue; /* request next iteration */
 		}
 
@@ -410,7 +410,7 @@ wtiWorker(wti_t *__restrict__ const pThis)
 
 	/* indicate termination */
 	pthread_cleanup_pop(0); /* remove cleanup handler */
-	pthread_setcancelstate(iCancelStateSave, NULL);
+	pthread_setcancelstate(iCancelStateSave, NULL); //恢复取消状态
 	dbgprintf("wti %p: worker exiting\n", pThis);
 
 	RETiRet;

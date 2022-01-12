@@ -116,7 +116,7 @@ AcceptConnReq(netstrm_t *pThis, netstrm_t **ppNew)
 	assert(ppNew != NULL);
 
 	/* accept the new connection */
-	CHKiRet(pThis->Drvr.AcceptConnReq(pThis->pDrvrData, &pNewNsd));
+	CHKiRet(pThis->Drvr.AcceptConnReq(pThis->pDrvrData, &pNewNsd)); //nsd_pctcp.c的AcceptConnReq函数
 	/* construct our object so that we can use it... */
 	CHKiRet(objUse(netstrms, DONT_LOAD_LIB)); /* use netstrms obj if not already done so */
 	CHKiRet(netstrms.CreateStrm(pThis->pNS, ppNew));
@@ -171,7 +171,7 @@ Rcv(netstrm_t *pThis, uchar *pBuf, ssize_t *pLenBuf)
 	DEFiRet;
 	ISOBJ_TYPE_assert(pThis, netstrm);
 //printf("Rcv %p\n", pThis);
-	iRet = pThis->Drvr.Rcv(pThis->pDrvrData, pBuf, pLenBuf);
+	iRet = pThis->Drvr.Rcv(pThis->pDrvrData, pBuf, pLenBuf); //nsd_ptcp.c的Rcv函数
 	RETiRet;
 }
 

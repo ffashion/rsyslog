@@ -358,7 +358,7 @@ wtpWrkrExecCancelCleanup(void *arg)
 #if !defined(_AIX)
 #pragma GCC diagnostic ignored "-Wempty-body"
 #endif 
-static void *
+static void *  
 wtpWorker(void *arg) /* the arg is actually a wti object, even though we are in wtp! */
 {
 	wti_t *pWti = (wti_t*) arg;

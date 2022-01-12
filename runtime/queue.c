@@ -2002,7 +2002,7 @@ ConsumerReg(qqueue_t *pThis, wti_t *pWti)
 
 
 	pWti->pbShutdownImmediate = &pThis->bShutdownImmediate;
-	CHKiRet(pThis->pConsumer(pThis->pAction, &pWti->batch, pWti));
+	CHKiRet(pThis->pConsumer(pThis->pAction, &pWti->batch, pWti)); //msgConsumer(void __attribute__((unused)) *notNeeded, batch_t *pBatch, wti_t *pWti)
 
 	/* we now need to check if we should deliberately delay processing a bit
 	 * and, if so, do that. -- rgerhards, 2008-01-30

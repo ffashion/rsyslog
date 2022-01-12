@@ -217,7 +217,7 @@ doRcvData(tcps_sess_t *pSess, char *buf, size_t lenBuf, ssize_t *piLenRcvd)
 	assert(piLenRcvd != NULL);
 
 	*piLenRcvd = lenBuf;
-	CHKiRet(netstrm.Rcv(pSess->pStrm, (uchar*) buf, piLenRcvd));
+	CHKiRet(netstrm.Rcv(pSess->pStrm, (uchar*) buf, piLenRcvd)); //netstrm.c 的 Rcv函数
 finalize_it:
 	RETiRet;
 }
@@ -644,7 +644,7 @@ ENDfreeCnf
  */
 BEGINrunInput
 CODESTARTrunInput
-	iRet = tcpsrv.Run(pOurTcpsrv);
+	iRet = tcpsrv.Run(pOurTcpsrv); 
 ENDrunInput
 
 

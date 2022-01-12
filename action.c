@@ -1165,8 +1165,8 @@ actionCallCommitTransaction(action_t * const pThis,
 		  wrkrInfo->p.tx.currIParam);
 
 	iRet = pThis->pMod->mod.om.commitTransaction(
-		    pWti->actWrkrInfo[pThis->iActionNbr].actWrkrData,
-		    wrkrInfo->p.tx.iparams, wrkrInfo->p.tx.currIParam);
+		    pWti->actWrkrInfo[pThis->iActionNbr].actWrkrData, //这里第一个参数的子结构 会写道文件 类型为wrkrInstanceData_t
+		    wrkrInfo->p.tx.iparams, wrkrInfo->p.tx.currIParam); //omfile.c 中使用宏定义
 	iRet = handleActionExecResult(pThis, pWti, iRet);
 	RETiRet;
 }

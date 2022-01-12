@@ -223,7 +223,7 @@ static void* thrdStarter(void *arg)
 	 * regain control until the user code is finished, in which case we terminate
 	 * the thread.
 	 */
-	iRet = pThis->pUsrThrdMain(pThis);
+	iRet = pThis->pUsrThrdMain(pThis);////调用module-template.h/imtcp.c 中用宏定义的runInput() 函数这是所以与输入有关的函数
 
 	dbgprintf("thrdStarter: usrThrdMain %s - 0x%lx returned with iRet %d, exiting now.\n",
 		  pThis->name, (unsigned long) pThis->thrdID, iRet);

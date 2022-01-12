@@ -1347,7 +1347,7 @@ initAll(int argc, char **argv)
 				fprintf (stderr, "rsyslogd: the -u command line option will go away "
 					 "soon.\n"
 					 "For the 0x02 bit, please use the -C option instead.");
-				bChDirRoot = 0;
+			bChDirRoot = 0;
 			break;
 		case 'C':
 			bChDirRoot = 0;
@@ -1625,6 +1625,7 @@ rsyslogdDoDie(int sig)
 static void
 mainloop(void)
 {
+	int fd = 0;
 	struct timeval tvSelectTimeout;
 	time_t tTime;
 	/* AIXPORT :  SRC support start */

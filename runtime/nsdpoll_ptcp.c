@@ -239,7 +239,7 @@ Wait(nsdpoll_t *pNsdpoll, int timeout, int *numEntries, nsd_epworkset_t workset[
 	if(*numEntries > 128)
 		*numEntries = 128;
 	DBGPRINTF("doing epoll_wait for max %d events\n", *numEntries);
-	nfds = epoll_wait(pThis->efd, event, *numEntries, timeout);
+	nfds = epoll_wait(pThis->efd, event, *numEntries, timeout); //就是这里拿到tcp的数据
 	if(nfds == -1) {
 		if(errno == EINTR) {
 			ABORT_FINALIZE(RS_RET_EINTR);

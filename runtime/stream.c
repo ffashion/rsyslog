@@ -1225,7 +1225,7 @@ doWriteCall(strm_t *pThis, uchar *pBuf, size_t *pLenBuf)
 					 */
 				}
 			}
-	 	} 
+	 	}
 		/* advance buffer to next write position */
 		iTotalWritten += iWritten;
 		lenBuf -= iWritten;

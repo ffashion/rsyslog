@@ -130,7 +130,7 @@ Wait(nspoll_t *pThis, int timeout, int *numEntries, nsd_epworkset_t workset[]) {
 	DEFiRet;
 	ISOBJ_TYPE_assert(pThis, nspoll);
 	assert(workset != NULL);
-	iRet = pThis->Drvr.Wait(pThis->pDrvrData, timeout, numEntries, workset);
+	iRet = pThis->Drvr.Wait(pThis->pDrvrData, timeout, numEntries, workset); //进入nsdpoll_ptcp.c的Wait函数
 	RETiRet;
 }
 
